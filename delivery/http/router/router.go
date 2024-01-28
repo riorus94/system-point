@@ -8,7 +8,8 @@ import (
 )
 
 func NewRouter(app *fiber.App, domain domain.Domain) {
-	registrationController := contoller.NewRegisterController(domain)
+	kindActivityController := contoller.NewKindActivityController(domain)
 
-	app.Post("/", registrationController.CreateUser)
+	app.Get("/", kindActivityController.GetActivity)
+	app.Post("/activity", kindActivityController.AddActivity)
 }

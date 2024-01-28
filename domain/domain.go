@@ -7,7 +7,7 @@ import (
 )
 
 type Domain struct {
-	UserRegistrationUsecase usecase.UserRegiserterUsecase
+	KindActivityUsecase usecase.KindActivityUsecase
 }
 
 func ConstructDomain() Domain {
@@ -15,9 +15,11 @@ func ConstructDomain() Domain {
 
 	databaseRepository := repository.NewDatabaseRepository(databaseConn)
 
-	registerUsecase := usecase.NewUserRegisterUsecase(databaseRepository)
+	// registerUsecase := usecase.NewUserRegisterUsecase(databaseRepository)
+
+	kindActivityUsecase := usecase.NewKindActivityUsecase(databaseRepository)
 
 	return Domain{
-		UserRegistrationUsecase: &registerUsecase,
+		KindActivityUsecase: &kindActivityUsecase,
 	}
 }

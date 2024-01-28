@@ -2,14 +2,14 @@ package request
 
 import "system-point/domain/entity"
 
-type RequestRegisterDTO struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+type RequestAddKindActivityDTO struct {
+	Name  string `json:"name"`
+	Point int    `json:"point"`
 }
 
-func (input RequestRegisterDTO) ToRegister() entity.Register {
-	return entity.Register{
-		Email:    input.Email,
-		Password: input.Password,
+func (input RequestAddKindActivityDTO) ToAddKindActivity() entity.KindActivity {
+	return entity.KindActivity{
+		Name:  input.Name,
+		Point: input.Point,
 	}
 }

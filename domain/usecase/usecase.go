@@ -5,21 +5,31 @@ import (
 	"system-point/domain/repository"
 )
 
-type UserRegiserterUsecase interface {
-	Register(action entity.Register) error
+type KindActivityUsecase interface {
+	GetRandomActivity() (*entity.KindActivity, error)
+	SaveActivity(action entity.KindActivity) error
 }
 
-type userRegisterImpl struct {
+type kindActivityUsecaseImpl struct {
 	databaseRepository repository.DatabaseRepository
 }
 
-func NewUserRegisterUsecase(databaseRepository repository.DatabaseRepository) userRegisterImpl {
-	return userRegisterImpl{
+func NewKindActivityUsecase(databaseRepository repository.DatabaseRepository) kindActivityUsecaseImpl {
+	return kindActivityUsecaseImpl{
 		databaseRepository: databaseRepository,
 	}
 }
 
-func (input *userRegisterImpl) Register(action entity.Register) error {
+func (input *kindActivityUsecaseImpl) GetRandomActivity() (*entity.KindActivity, error) {
+	var activity entity.KindActivity
+	if err := input.databaseRepository.FindRandomActivity(&activity); err != nil {
+		return nil, err
+	}
+
+	return &activity, nil
+}
+
+func (input *kindActivityUsecaseImpl) SaveActivity(action entity.KindActivity) error {
 	if err := input.databaseRepository.Create(&action); err != nil {
 		return err
 	}
