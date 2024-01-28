@@ -18,16 +18,15 @@ func NewKindActivityController(domain domain.Domain) KindActivityController {
 	}
 }
 
-func (input *KindActivityController) GetActivity(ctx *fiber.Ctx) error {
-	activity, err := input.domain.KindActivityUsecase.GetRandomActivity()
-
+func (input *KindActivityController) SumAllPointsHandler(ctx *fiber.Ctx) error {
+	totalPoints, err := input.domain.KindActivityUsecase.SumAllPoints()
 	if err != nil {
-		resp, statusCode := util.ConstructResponseError(fiber.StatusBadRequest, "Failed to fetch activity")
-		return ctx.Status(statusCode).JSON(resp)
+		panic(err)
 	}
 
+	response := map[string]int{"totalPoints": totalPoints}
 	return ctx.Render("resource/views/home", fiber.Map{
-		"Activity": activity.Name,
+		"Points": response,
 	})
 }
 

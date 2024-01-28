@@ -15,8 +15,6 @@ func ConstructDomain() Domain {
 
 	databaseRepository := repository.NewDatabaseRepository(databaseConn)
 
-	// registerUsecase := usecase.NewUserRegisterUsecase(databaseRepository)
-
 	kindActivityUsecase := usecase.NewKindActivityUsecase(databaseRepository)
 
 	return Domain{

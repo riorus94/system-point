@@ -1,14 +1,13 @@
 package repository
 
 import (
-	"fmt"
-	"log"
+	"system-point/domain/entity"
 
 	"gorm.io/gorm"
 )
 
 type DatabaseRepository interface {
-	FindRandomActivity(data any, conditions ...any) error
+	GetAllActivities() ([]entity.KindActivity, error)
 	Create(value any) error
 }
 
@@ -22,22 +21,18 @@ func NewDatabaseRepository(database *gorm.DB) databaseRepositoryImpl {
 	}
 }
 
-func (input databaseRepositoryImpl) FindRandomActivity(data any, conditions ...any) error {
-	result := input.database.Order("RANDOM()").Limit(1).Find(data, conditions...)
-
-	if result.Error != nil {
-		log.Println(fmt.Sprintf("error fetching book:: %v", result.Error))
-		return result.Error
+func (r databaseRepositoryImpl) GetAllActivities() ([]entity.KindActivity, error) {
+	var activities []entity.KindActivity
+	if err := r.database.Find(&activities).Error; err != nil {
+		return nil, err
 	}
-
-	return nil
+	return activities, nil
 }
 
 func (input databaseRepositoryImpl) Create(value any) error {
 	result := input.database.Create(value)
 
 	if result.Error != nil {
-		log.Printf(fmt.Sprintf("Error create user:: %v", result.Error))
 		return result.Error
 	}
 

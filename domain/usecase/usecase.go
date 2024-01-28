@@ -6,7 +6,7 @@ import (
 )
 
 type KindActivityUsecase interface {
-	GetRandomActivity() (*entity.KindActivity, error)
+	SumAllPoints() (int, error)
 	SaveActivity(action entity.KindActivity) error
 }
 
@@ -20,19 +20,24 @@ func NewKindActivityUsecase(databaseRepository repository.DatabaseRepository) ki
 	}
 }
 
-func (input *kindActivityUsecaseImpl) GetRandomActivity() (*entity.KindActivity, error) {
-	var activity entity.KindActivity
-	if err := input.databaseRepository.FindRandomActivity(&activity); err != nil {
-		return nil, err
-	}
-
-	return &activity, nil
-}
-
 func (input *kindActivityUsecaseImpl) SaveActivity(action entity.KindActivity) error {
 	if err := input.databaseRepository.Create(&action); err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func (f *kindActivityUsecaseImpl) SumAllPoints() (int, error) {
+	activities, err := f.databaseRepository.GetAllActivities()
+	if err != nil {
+		return 0, err
+	}
+
+	totalPoints := 0
+	for _, activity := range activities {
+		totalPoints += activity.Point
+	}
+
+	return totalPoints, nil
 }
